@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
   const isLoginPage = request.nextUrl.pathname === '/admin/login'
 
-  if (isAdminRoute && !isLoginPage && !user) {
+  if (isAdminRoute && !isLoginPage && (!user || user.email !== process.env.OWNER_EMAIL)) {
     return NextResponse.redirect(new URL('/admin/login', request.url))
   }
 

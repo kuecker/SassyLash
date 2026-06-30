@@ -16,7 +16,7 @@ CREATE TABLE clients (
   created_at timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE INDEX clients_phone_idx ON clients(phone);
+CREATE UNIQUE INDEX clients_phone_idx ON clients(phone);
 
 -- Availability (one row per day of week)
 CREATE TABLE availability (

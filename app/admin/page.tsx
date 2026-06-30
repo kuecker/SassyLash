@@ -8,9 +8,10 @@ import type { BookingWithRelations } from '@/types'
 type Tab = 'pending' | 'upcoming' | 'past'
 
 export default function AdminDashboard() {
-  const [tab,      setTab]      = useState<Tab>('pending')
-  const [bookings, setBookings] = useState<BookingWithRelations[]>([])
-  const [loading,  setLoading]  = useState(true)
+  const [tab,       setTab]      = useState<Tab>('pending')
+  const [bookings,  setBookings] = useState<BookingWithRelations[]>([])
+  const [loading,   setLoading]  = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -35,7 +36,13 @@ export default function AdminDashboard() {
         .order('start_time', { ascending: false })
     }
 
-    const { data } = await query
+    const { data, error: queryError } = await query
+    if (queryError) {
+      setLoadError('Failed to load appointments. Please refresh.')
+      setLoading(false)
+      return
+    }
+    setLoadError(null)
     setBookings((data as BookingWithRelations[]) ?? [])
     setLoading(false)
   }, [tab])
@@ -61,6 +68,12 @@ export default function AdminDashboard() {
           </button>
         ))}
       </div>
+
+      {loadError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+          {loadError}
+        </div>
+      )}
 
       {loading ? (
         <div className="space-y-3">

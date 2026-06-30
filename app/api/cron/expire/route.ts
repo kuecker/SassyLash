@@ -23,10 +23,15 @@ export async function POST(request: NextRequest) {
 
   const ids = expired.map((b: any) => b.id)
 
-  await db
+  const { error: updateError } = await db
     .from('bookings')
     .update({ status: 'expired', updated_at: new Date().toISOString() })
     .in('id', ids)
+
+  if (updateError) {
+    console.error('Failed to expire bookings:', updateError)
+    return NextResponse.json({ error: 'Failed to expire bookings' }, { status: 500 })
+  }
 
   await Promise.allSettled(
     expired.map((b: any) =>

@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       .select('start_time, end_time')
       .in('status', ['pending', 'confirmed'])
       .gte('start_time', date + 'T00:00:00.000Z')
-      .lt('start_time',  date + 'T24:00:00.000Z'),
+      .lt('start_time', new Date(new Date(date + 'T00:00:00.000Z').getTime() + 86400000).toISOString()),
   ])
 
   if (!avail || !service) {
