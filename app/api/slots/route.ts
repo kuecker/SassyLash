@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       .select('start_time, end_time')
       .in('status', ['pending', 'confirmed'])
       .gte('start_time', date + 'T00:00:00.000Z')
-      .lt('start_time',  date + 'T23:59:59.999Z'),
+      .lt('start_time',  date + 'T24:00:00.000Z'),
   ])
 
   if (!avail || !service) {

@@ -5,7 +5,12 @@ import { sendOwnerNotification } from '@/lib/twilio'
 import { addMinutes } from 'date-fns'
 
 export async function POST(request: NextRequest) {
-  const body = await request.json()
+  let body: { serviceId?: string; start?: string; name?: string; phone?: string; email?: string }
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+  }
   const { serviceId, start, name, phone, email } = body
 
   if (!serviceId || !start || !name || !phone || !email) {
