@@ -10,12 +10,24 @@ interface Props {
 }
 
 export function BookingCard({ booking, onAction }: Props) {
-  const [loading, setLoading] = useState<'confirm' | 'deny' | null>(null)
+  const [loading,  setLoading]  = useState<'confirm' | 'deny' | null>(null)
+  const [actError, setActError] = useState<string | null>(null)
 
   async function act(action: 'confirm' | 'deny') {
     setLoading(action)
-    await fetch(`/api/bookings/${booking.id}/${action}`, { method: 'POST' })
-    onAction?.()
+    setActError(null)
+    try {
+      const res = await fetch(`/api/bookings/${booking.id}/${action}`, { method: 'POST' })
+      if (res.ok) {
+        onAction?.()
+      } else {
+        setActError('Action failed. Please try again.')
+        setLoading(null)
+      }
+    } catch {
+      setActError('Network error. Please try again.')
+      setLoading(null)
+    }
   }
 
   const statusColors: Record<string, string> = {
@@ -61,6 +73,7 @@ export function BookingCard({ booking, onAction }: Props) {
           </button>
         </div>
       )}
+      {actError && <p className="text-red-600 text-xs mt-1">{actError}</p>}
     </div>
   )
 }

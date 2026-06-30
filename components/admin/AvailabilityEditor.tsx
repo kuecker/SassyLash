@@ -28,7 +28,7 @@ export function AvailabilityEditor({ initialAvailability }: Props) {
 
   return (
     <div className="space-y-3">
-      {rows
+      {[...rows]
         .sort((a, b) => a.day_of_week - b.day_of_week)
         .map(row => (
           <div key={row.id} className="bg-white border border-stone-200 rounded-xl p-4">

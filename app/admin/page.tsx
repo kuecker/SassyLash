@@ -27,7 +27,12 @@ export default function AdminDashboard() {
     } else if (tab === 'upcoming') {
       query = query.eq('status', 'confirmed').gte('start_time', now)
     } else {
-      query = query.in('status', ['confirmed', 'denied', 'expired', 'cancelled']).lt('start_time', now)
+      // Past tab: denied/expired/cancelled at any time, plus confirmed past appointments
+      query = supabase
+        .from('bookings')
+        .select('*, clients(*), services(*)')
+        .or(`status.in.(denied,expired,cancelled),and(status.eq.confirmed,start_time.lt.${now})`)
+        .order('start_time', { ascending: false })
     }
 
     const { data } = await query
