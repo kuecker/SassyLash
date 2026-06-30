@@ -59,9 +59,31 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 DECLARE
-  overlap_count integer;
-  new_id        uuid;
+  overlap_count   integer;
+  pending_count   integer;
+  new_id          uuid;
 BEGIN
+  -- Reject bookings in the past
+  IF p_start_time < now() THEN
+    RAISE EXCEPTION 'slot_in_past';
+  END IF;
+
+  -- Reject if end is not after start (prevents zero/negative duration)
+  IF p_end_time <= p_start_time THEN
+    RAISE EXCEPTION 'invalid_duration';
+  END IF;
+
+  -- Rate-limit: one pending booking per client at a time
+  SELECT COUNT(*) INTO pending_count
+  FROM bookings
+  WHERE client_id = p_client_id
+    AND status = 'pending';
+
+  IF pending_count > 0 THEN
+    RAISE EXCEPTION 'client_has_pending';
+  END IF;
+
+  -- Overlap check: no two active bookings can share time
   SELECT COUNT(*) INTO overlap_count
   FROM bookings
   WHERE status IN ('pending', 'confirmed')
@@ -79,3 +101,22 @@ BEGIN
   RETURN new_id;
 END;
 $$;
+
+-- ── Row-Level Security ────────────────────────────────────────────────────────
+
+ALTER TABLE services     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE availability ENABLE ROW LEVEL SECURITY;
+ALTER TABLE clients      ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bookings     ENABLE ROW LEVEL SECURITY;
+
+-- Public (anon key): read-only access to catalogue data needed for booking page
+CREATE POLICY "public read services"     ON services     FOR SELECT USING (true);
+CREATE POLICY "public read availability" ON availability FOR SELECT USING (true);
+
+-- Authenticated (owner session via Supabase Auth): full access for admin UI
+CREATE POLICY "owner read bookings"       ON bookings     FOR SELECT  TO authenticated USING (true);
+CREATE POLICY "owner update bookings"     ON bookings     FOR UPDATE  TO authenticated USING (true);
+CREATE POLICY "owner read clients"        ON clients      FOR SELECT  TO authenticated USING (true);
+CREATE POLICY "owner update availability" ON availability FOR UPDATE  TO authenticated USING (true);
+
+-- No direct anon INSERT on clients/bookings — all writes go through service-role API routes
