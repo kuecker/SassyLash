@@ -25,6 +25,14 @@ export async function POST(request: NextRequest) {
     return new NextResponse('Forbidden', { status: 403 })
   }
 
+  // Verify the message is from the owner's phone — reject all others silently
+  const normalize = (p: string) => p.replace(/[\s\-().+]/g, '')
+  const fromPhone = normalize(params['From'] ?? '')
+  const ownerPhone = normalize(process.env.OWNER_PHONE_NUMBER ?? '')
+  if (!fromPhone || !ownerPhone || fromPhone !== ownerPhone) {
+    return twimlResponse()
+  }
+
   const body = (params['Body'] ?? '').trim().toUpperCase()
   const words = body.split(/\s+/)
   const action = words[0]  // YES or NO
