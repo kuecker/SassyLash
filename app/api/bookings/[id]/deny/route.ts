@@ -27,10 +27,14 @@ export async function POST(
     return NextResponse.json({ error: 'Booking not found or not pending' }, { status: 404 })
   }
 
-  await db
+  const { error: updateError } = await db
     .from('bookings')
     .update({ status: 'denied', updated_at: new Date().toISOString() })
     .eq('id', id)
+
+  if (updateError) {
+    return NextResponse.json({ error: 'Failed to update booking' }, { status: 500 })
+  }
 
   try {
     await sendClientDenial({

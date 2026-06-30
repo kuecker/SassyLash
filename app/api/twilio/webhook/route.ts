@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   // Validate request comes from Twilio
   const authToken = process.env.TWILIO_AUTH_TOKEN!
   const signature = request.headers.get('x-twilio-signature') ?? ''
-  const url = process.env.NEXT_PUBLIC_APP_URL + '/api/twilio/webhook'
+  const url = process.env.NEXT_PUBLIC_APP_URL! + '/api/twilio/webhook'
 
   const formData = await request.formData()
   const params: Record<string, string> = {}
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
   const ref    = words[1]  // e.g. A3X9K2 (optional)
 
   if (action !== 'YES' && action !== 'NO') {
-    await sendOwnerInvalidReply()
+    try { await sendOwnerInvalidReply() } catch (e) { console.error('Failed to send invalid reply SMS:', e) }
     return twimlResponse()
   }
 
@@ -63,15 +63,20 @@ export async function POST(request: NextRequest) {
   }
 
   if (!booking) {
-    await sendOwnerInvalidReply()
+    try { await sendOwnerInvalidReply() } catch (e) { console.error('Failed to send invalid reply SMS:', e) }
     return twimlResponse()
   }
 
   if (action === 'YES') {
-    await db
+    const { error: updateError } = await db
       .from('bookings')
       .update({ status: 'confirmed', updated_at: new Date().toISOString() })
       .eq('id', booking.id)
+
+    if (updateError) {
+      console.error('Failed to update booking:', updateError)
+      return twimlResponse()
+    }
 
     try {
       await sendClientConfirmation({
@@ -84,10 +89,15 @@ export async function POST(request: NextRequest) {
       console.error('Failed to send client confirmation SMS:', e)
     }
   } else {
-    await db
+    const { error: updateError } = await db
       .from('bookings')
       .update({ status: 'denied', updated_at: new Date().toISOString() })
       .eq('id', booking.id)
+
+    if (updateError) {
+      console.error('Failed to update booking:', updateError)
+      return twimlResponse()
+    }
 
     try {
       await sendClientDenial({
