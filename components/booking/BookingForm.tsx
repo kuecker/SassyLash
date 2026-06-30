@@ -30,7 +30,7 @@ export function BookingForm({ service, slot, onSuccess, onError }: Props) {
 
       const data = await res.json()
 
-      if (!res.ok) {
+      if (res.status !== 201) {
         onError(data.error ?? 'Something went wrong. Please try again.')
       } else {
         onSuccess()

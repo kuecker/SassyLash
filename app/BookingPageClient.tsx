@@ -26,12 +26,23 @@ export function BookingPageClient({ services, availableDays }: Props) {
   useEffect(() => {
     if (!service || !date) return
     setSlot(null)
+    setSlots([])
     setLoading(true)
+    setError(null)
+
+    const controller = new AbortController()
     const dateStr = format(date, 'yyyy-MM-dd')
-    fetch(`/api/slots?date=${dateStr}&serviceId=${service.id}`)
+    fetch(`/api/slots?date=${dateStr}&serviceId=${service.id}`, { signal: controller.signal })
       .then(r => r.json())
       .then(d => setSlots(d.slots ?? []))
+      .catch(err => {
+        if (err.name === 'AbortError') return
+        setSlots([])
+        setError('Could not load available times. Please try again.')
+      })
       .finally(() => setLoading(false))
+
+    return () => controller.abort()
   }, [service, date])
 
   const step = !service ? 1 : !date ? 2 : !slot ? 3 : 4
