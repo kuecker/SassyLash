@@ -17,6 +17,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
+  // Basic length + format guards
+  if (name.length > 100 || email.length > 200 || phone.length > 20) {
+    return NextResponse.json({ error: 'Invalid field length' }, { status: 400 })
+  }
+  if (!/^\+?[\d\s\-().]{7,20}$/.test(phone)) {
+    return NextResponse.json({ error: 'Invalid phone number format' }, { status: 400 })
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
+  }
+
+  // Reject bookings more than 90 days out (limits abuse window)
+  const startDate = new Date(start)
+  const maxDate   = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+  if (isNaN(startDate.getTime()) || startDate > maxDate) {
+    return NextResponse.json({ error: 'Invalid booking date' }, { status: 400 })
+  }
+
   const supabase = createServiceRoleClient()
 
   // Get service duration
