@@ -7,19 +7,22 @@ import { format } from 'date-fns'
 interface Props {
   service: ServiceRow
   slot: TimeSlot
+  date: Date
   onSuccess: () => void
   onError: (msg: string) => void
 }
 
-export function BookingForm({ service, slot, onSuccess, onError }: Props) {
-  const [name,  setName]  = useState('')
-  const [phone, setPhone] = useState('')
-  const [email, setEmail] = useState('')
-  const [loading, setLoading] = useState(false)
+export function BookingForm({ service, slot, date, onSuccess, onError }: Props) {
+  const [name,       setName]       = useState('')
+  const [phone,      setPhone]      = useState('')
+  const [email,      setEmail]      = useState('')
+  const [loading,    setLoading]    = useState(false)
+  const [localError, setLocalError] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
+    setLocalError(null)
 
     try {
       const res = await fetch('/api/bookings', {
@@ -31,12 +34,16 @@ export function BookingForm({ service, slot, onSuccess, onError }: Props) {
       const data = await res.json()
 
       if (res.status !== 201) {
-        onError(data.error ?? 'Something went wrong. Please try again.')
+        const msg = data.error ?? 'Something went wrong. Please try again.'
+        setLocalError(msg)
+        onError(msg)
       } else {
         onSuccess()
       }
     } catch {
-      onError('Network error. Please try again.')
+      const msg = 'Network error. Please try again.'
+      setLocalError(msg)
+      onError(msg)
     } finally {
       setLoading(false)
     }
@@ -46,7 +53,9 @@ export function BookingForm({ service, slot, onSuccess, onError }: Props) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="bg-blushed-petal border border-petal-border rounded-lg p-4 text-sm">
         <p className="font-display font-medium text-deep-walnut">{service.name}</p>
-        <p className="font-body text-driftwood mt-0.5">{format(new Date(slot.start), "EEEE, MMMM d 'at' h:mm a")}</p>
+        <p className="font-body text-driftwood mt-0.5">
+          {format(date, "EEEE, MMMM d")} at {slot.label}
+        </p>
       </div>
 
       <div>
@@ -82,6 +91,12 @@ export function BookingForm({ service, slot, onSuccess, onError }: Props) {
           className="w-full font-body border border-chalk rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-petal-border bg-warm-white text-deep-walnut placeholder:text-fog"
         />
       </div>
+
+      {localError && (
+        <div className="bg-error-surface border border-petal-border text-error-text px-4 py-3 rounded-lg text-sm font-body">
+          {localError}
+        </div>
+      )}
 
       <button
         type="submit"

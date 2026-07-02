@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { fromZonedTime } from 'date-fns-tz'
 import { createServiceRoleClient } from '@/lib/supabase/server'
 import { generateSlots } from '@/lib/slots'
+
+const TZ = process.env.BUSINESS_TIMEZONE ?? 'America/Denver'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -13,9 +16,15 @@ export async function GET(request: NextRequest) {
 
   const supabase = createServiceRoleClient()
 
-  // Parse as UTC to avoid local-timezone day-of-week shifting
-  const requestedDate = new Date(date + 'T00:00:00.000Z')
+  // Interpret the date string as midnight in the business timezone.
+  // On a UTC server, new Date('2026-07-06T00:00:00') has local fields = midnight,
+  // so fromZonedTime converts those local fields "as if in TZ" → UTC equivalent.
+  const requestedDate = fromZonedTime(new Date(date + 'T00:00:00'), TZ)
   const dayOfWeek = requestedDate.getUTCDay()
+
+  // Query bookings for the full local day in business timezone (midnight → midnight+1)
+  const nextDayDate = fromZonedTime(new Date(date + 'T00:00:00'), TZ)
+  nextDayDate.setUTCDate(nextDayDate.getUTCDate() + 1)
 
   const [{ data: avail }, { data: service }, { data: bookings }] = await Promise.all([
     supabase
@@ -34,8 +43,8 @@ export async function GET(request: NextRequest) {
       .from('bookings')
       .select('start_time, end_time')
       .in('status', ['pending', 'confirmed'])
-      .gte('start_time', date + 'T00:00:00.000Z')
-      .lt('start_time', new Date(new Date(date + 'T00:00:00.000Z').getTime() + 86400000).toISOString()),
+      .gte('start_time', requestedDate.toISOString())
+      .lt('start_time',  nextDayDate.toISOString()),
   ])
 
   if (!avail || !service) {
@@ -47,7 +56,8 @@ export async function GET(request: NextRequest) {
     service.duration_minutes,
     avail.start_time,
     avail.end_time,
-    bookings ?? []
+    bookings ?? [],
+    TZ
   )
 
   return NextResponse.json({ slots })

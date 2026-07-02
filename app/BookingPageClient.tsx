@@ -98,7 +98,7 @@ export function BookingPageClient({ services, availableDays }: Props) {
         </section>
       )}
 
-      {step >= 4 && slot && service && (
+      {step >= 4 && slot && service && date && (
         <section>
           <h2 className="font-body text-xs font-semibold text-fog uppercase tracking-widest mb-4">
             4. Your Information
@@ -106,6 +106,7 @@ export function BookingPageClient({ services, availableDays }: Props) {
           <BookingForm
             service={service}
             slot={slot}
+            date={date}
             onSuccess={() => router.push('/confirmation')}
             onError={setError}
           />

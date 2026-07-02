@@ -1,37 +1,28 @@
-import { addMinutes, parseISO } from 'date-fns'
+import { addMinutes, format } from 'date-fns'
+import { toZonedTime, fromZonedTime } from 'date-fns-tz'
 import type { TimeSlot } from '@/types'
-
-/**
- * Format a UTC Date as a 12-hour time label (e.g. "9:00 AM", "4:00 PM").
- * Uses UTC hours/minutes directly to avoid local-timezone shifting.
- */
-function formatUTCLabel(date: Date): string {
-  const hours = date.getUTCHours()
-  const minutes = date.getUTCMinutes()
-  const period = hours >= 12 ? 'PM' : 'AM'
-  const displayHour = hours % 12 || 12
-  const displayMin = minutes.toString().padStart(2, '0')
-  return `${displayHour}:${displayMin} ${period}`
-}
 
 export function generateSlots(
   date: Date,
   durationMinutes: number,
   startTime: string,
   endTime: string,
-  existingBookings: { start_time: string; end_time: string }[]
+  existingBookings: { start_time: string; end_time: string }[],
+  timezone = 'UTC'
 ): TimeSlot[] {
   const [startH, startM] = startTime.split(':').map(Number)
   const [endH, endM] = endTime.split(':').map(Number)
 
-  // Build UTC boundaries from the UTC date components of `date`.
-  // Using Date.UTC avoids local-timezone offsets that date-fns set() would apply.
-  const year = date.getUTCFullYear()
-  const month = date.getUTCMonth()
-  const day = date.getUTCDate()
+  // `date` is midnight UTC representing the requested local date.
+  // Get local date components in business timezone.
+  const zonedDate = toZonedTime(date, timezone)
+  const y = zonedDate.getFullYear()
+  const m = zonedDate.getMonth()
+  const d = zonedDate.getDate()
 
-  const dayStart = new Date(Date.UTC(year, month, day, startH, startM, 0, 0))
-  const dayEnd   = new Date(Date.UTC(year, month, day, endH,   endM,   0, 0))
+  // Build UTC timestamps for business-hours start/end in the business timezone.
+  const dayStart = fromZonedTime(new Date(y, m, d, startH, startM, 0), timezone)
+  const dayEnd   = fromZonedTime(new Date(y, m, d, endH,   endM,   0), timezone)
 
   const slots: TimeSlot[] = []
   let current = dayStart
@@ -41,16 +32,18 @@ export function generateSlots(
     if (slotEnd > dayEnd) break
 
     const overlaps = existingBookings.some(b => {
-      const bStart = parseISO(b.start_time)
-      const bEnd   = parseISO(b.end_time)
+      const bStart = new Date(b.start_time)
+      const bEnd   = new Date(b.end_time)
       return current < bEnd && slotEnd > bStart
     })
 
     if (!overlaps) {
+      // Label in business timezone
+      const label = format(toZonedTime(current, timezone), 'h:mm a')
       slots.push({
         start: current.toISOString(),
         end:   slotEnd.toISOString(),
-        label: formatUTCLabel(current),
+        label,
       })
     }
 
