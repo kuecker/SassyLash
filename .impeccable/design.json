@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-01T00:00:00Z",
+  "title": "Design System: Sassy Lash & Skin",
+  "extensions": {
+    "colorMeta": {
+      "warm-garnet": {
+        "role": "primary",
+        "displayName": "Warm Garnet",
+        "canonical": "oklch(64% 0.24 12)",
+        "tonalRamp": [
+          "oklch(27% 0.10 11)",
+          "oklch(37% 0.155 13)",
+          "oklch(46% 0.20 14)",
+          "oklch(52% 0.23 13)",
+          "oklch(57% 0.245 13)",
+          "oklch(64% 0.24 12)",
+          "oklch(72% 0.20 13)",
+          "oklch(89% 0.09 13)"
+        ]
+      },
+      "warm-garnet-deep": {
+        "role": "primary",
+        "displayName": "Warm Garnet Deep",
+        "canonical": "oklch(57% 0.245 13)",
+        "tonalRamp": [
+          "oklch(27% 0.10 11)",
+          "oklch(37% 0.155 13)",
+          "oklch(46% 0.20 14)",
+          "oklch(52% 0.23 13)",
+          "oklch(57% 0.245 13)",
+          "oklch(64% 0.24 12)",
+          "oklch(72% 0.20 13)",
+          "oklch(89% 0.09 13)"
+        ]
+      },
+      "warm-garnet-border": {
+        "role": "primary",
+        "displayName": "Warm Garnet Border",
+        "canonical": "oklch(72% 0.20 13)",
+        "tonalRamp": [
+          "oklch(27% 0.10 11)",
+          "oklch(46% 0.20 14)",
+          "oklch(57% 0.245 13)",
+          "oklch(64% 0.24 12)",
+          "oklch(72% 0.20 13)",
+          "oklch(81% 0.14 13)",
+          "oklch(89% 0.09 13)",
+          "oklch(97% 0.025 9)"
+        ]
+      },
+      "blushed-petal": {
+        "role": "secondary",
+        "displayName": "Blushed Petal",
+        "canonical": "oklch(97% 0.025 9)",
+        "tonalRamp": [
+          "oklch(46% 0.20 14)",
+          "oklch(57% 0.245 13)",
+          "oklch(64% 0.24 12)",
+          "oklch(72% 0.20 13)",
+          "oklch(81% 0.14 13)",
+          "oklch(89% 0.09 13)",
+          "oklch(94% 0.05 11)",
+          "oklch(97% 0.025 9)"
+        ]
+      },
+      "petal-border": {
+        "role": "secondary",
+        "displayName": "Petal Border",
+        "canonical": "oklch(89% 0.09 13)",
+        "tonalRamp": [
+          "oklch(46% 0.20 14)",
+          "oklch(57% 0.245 13)",
+          "oklch(64% 0.24 12)",
+          "oklch(72% 0.20 13)",
+          "oklch(81% 0.14 13)",
+          "oklch(89% 0.09 13)",
+          "oklch(94% 0.05 11)",
+          "oklch(97% 0.025 9)"
+        ]
+      },
+      "cream-canvas": {
+        "role": "neutral",
+        "displayName": "Cream Canvas",
+        "canonical": "oklch(98% 0.002 56)",
+        "tonalRamp": [
+          "oklch(17% 0.006 56)",
+          "oklch(22% 0.006 56)",
+          "oklch(30% 0.006 56)",
+          "oklch(50% 0.006 56)",
+          "oklch(65% 0.006 56)",
+          "oklch(82% 0.004 56)",
+          "oklch(95% 0.003 56)",
+          "oklch(98% 0.002 56)"
+        ]
+      },
+      "deep-walnut": {
+        "role": "neutral",
+        "displayName": "Deep Walnut",
+        "canonical": "oklch(22% 0.006 56)",
+        "tonalRamp": [
+          "oklch(17% 0.006 56)",
+          "oklch(22% 0.006 56)",
+          "oklch(30% 0.006 56)",
+          "oklch(38% 0.006 56)",
+          "oklch(50% 0.006 56)",
+          "oklch(65% 0.006 56)",
+          "oklch(82% 0.004 56)",
+          "oklch(95% 0.003 56)"
+        ]
+      },
+      "driftwood": {
+        "role": "neutral",
+        "displayName": "Driftwood",
+        "canonical": "oklch(50% 0.006 56)",
+        "tonalRamp": [
+          "oklch(17% 0.006 56)",
+          "oklch(22% 0.006 56)",
+          "oklch(30% 0.006 56)",
+          "oklch(38% 0.006 56)",
+          "oklch(50% 0.006 56)",
+          "oklch(65% 0.006 56)",
+          "oklch(82% 0.004 56)",
+          "oklch(95% 0.003 56)"
+        ]
+      },
+      "chalk": {
+        "role": "neutral",
+        "displayName": "Chalk",
+        "canonical": "oklch(90% 0.003 56)",
+        "tonalRamp": [
+          "oklch(22% 0.006 56)",
+          "oklch(38% 0.006 56)",
+          "oklch(50% 0.006 56)",
+          "oklch(65% 0.006 56)",
+          "oklch(82% 0.004 56)",
+          "oklch(90% 0.003 56)",
+          "oklch(95% 0.003 56)",
+          "oklch(98% 0.002 56)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page title only. 'Sassy Lash & Skin' header. One instance per view." },
+      "headline": { "displayName": "Headline", "purpose": "Admin section headings, confirmation page h1." },
+      "title": { "displayName": "Title", "purpose": "Service card names, prominent component labels." },
+      "body": { "displayName": "Body", "purpose": "Descriptions, form labels, all running text. Max 65ch." },
+      "label": { "displayName": "Label", "purpose": "Step labels (uppercase), duration badges, small metadata." }
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "This system uses no shadows. Depth is achieved through border shifts and tonal backgrounds exclusively."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px #FDA4AF",
+        "purpose": "Focus visible ring on interactive elements (inputs, buttons). Uses rose-300 at 3px offset."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-state",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All state transitions: border color, background color. 150ms duration."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (CTA)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Full-width on mobile. Used for 'Request Appointment' and primary admin actions.",
+      "html": "<button class=\"ds-btn-primary\">Request Appointment</button>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); .ds-btn-primary { display: block; width: 100%; background: #F43F5E; color: #FFFFFF; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; padding: 12px 24px; border-radius: 12px; border: none; cursor: pointer; transition: background-color 150ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: #E11D48; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px #FDA4AF; } .ds-btn-primary:disabled { background: #FDA4AF; cursor: not-allowed; }"
+    },
+    {
+      "name": "Service Card",
+      "kind": "card",
+      "refersTo": "service-card",
+      "description": "Selectable service tile. 2px border shifts through hover and selected states.",
+      "html": "<button class=\"ds-service-card ds-service-card--selected\"><div class=\"ds-service-card__inner\"><div><span class=\"ds-service-card__name\">Full Set</span><p class=\"ds-service-card__desc\">Complete new set of eyelash extensions. Perfect for first-time clients.</p></div><span class=\"ds-service-card__duration\">2 hrs</span></div></button>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600&family=Inter:wght@400&display=swap'); .ds-service-card { display: block; width: 100%; text-align: left; padding: 20px; border-radius: 12px; border: 2px solid #E7E5E4; background: #FFFFFF; cursor: pointer; transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-service-card:hover { border-color: #FECDD3; } .ds-service-card--selected { border-color: #FB7185; background: #FFF1F2; } .ds-service-card__inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; } .ds-service-card__name { font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #292524; display: block; } .ds-service-card__desc { font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 400; color: #78716C; margin: 4px 0 0; } .ds-service-card__duration { font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; color: #A8A29E; white-space: nowrap; flex-shrink: 0; }"
+    },
+    {
+      "name": "Slot Button",
+      "kind": "button",
+      "refersTo": "button-selection-selected",
+      "description": "Time slot selector. Appears in a 3-4 column grid. Border shifts carry all state.",
+      "html": "<div class=\"ds-slot-grid\"><button class=\"ds-slot-btn\">9:00 AM</button><button class=\"ds-slot-btn\">10:00 AM</button><button class=\"ds-slot-btn ds-slot-btn--selected\">11:00 AM</button><button class=\"ds-slot-btn\">12:00 PM</button><button class=\"ds-slot-btn\">1:00 PM</button><button class=\"ds-slot-btn\">2:00 PM</button></div>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap'); .ds-slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } @media (min-width: 640px) { .ds-slot-grid { grid-template-columns: repeat(4, 1fr); } } .ds-slot-btn { padding: 8px 12px; border-radius: 8px; border: 1px solid #E7E5E4; background: #FFFFFF; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; color: #44403C; cursor: pointer; transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1), background-color 150ms cubic-bezier(0.16, 1, 0.3, 1), color 150ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-slot-btn:hover { border-color: #FECDD3; } .ds-slot-btn--selected { border-color: #FB7185; background: #FFF1F2; color: #E11D48; } .ds-slot-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px #FDA4AF; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Form text field. Used for name, phone, email in the booking form.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field__label\" for=\"ds-input-name\">Full Name</label><input class=\"ds-field__input\" id=\"ds-input-name\" type=\"text\" placeholder=\"Jane Smith\" /></div>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); .ds-field { display: flex; flex-direction: column; gap: 4px; } .ds-field__label { font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; color: #44403C; } .ds-field__input { width: 100%; background: #FFFFFF; border: 1px solid #D6D3D1; border-radius: 8px; padding: 8px 12px; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 400; color: #292524; transition: box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1); box-sizing: border-box; } .ds-field__input::placeholder { color: #A8A29E; } .ds-field__input:focus { outline: none; box-shadow: 0 0 0 3px #FDA4AF; }"
+    },
+    {
+      "name": "Booking Summary Block",
+      "kind": "card",
+      "refersTo": "booking-summary",
+      "description": "Confirmation of selected service and time before client fills their info. The most color-dense element on the page.",
+      "html": "<div class=\"ds-booking-summary\"><p class=\"ds-booking-summary__service\">Full Set</p><p class=\"ds-booking-summary__time\">Monday, July 7 at 10:00 AM</p></div>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600&family=Inter:wght@400&display=swap'); .ds-booking-summary { background: #FFF1F2; border: 1px solid #FECDD3; border-radius: 8px; padding: 16px; } .ds-booking-summary__service { font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #9F1239; margin: 0; } .ds-booking-summary__time { font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 400; color: #E11D48; margin: 4px 0 0; }"
+    },
+    {
+      "name": "Step Label",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Section header in the progressive booking flow. Small, uppercase, Fog-colored. Orients without competing.",
+      "html": "<h2 class=\"ds-step-label\">1. Select a Service</h2>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap'); .ds-step-label { font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; color: #A8A29E; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; }"
+    },
+    {
+      "name": "Page Header",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Brand header on the booking page. White background, bottom border, centered name.",
+      "html": "<header class=\"ds-page-header\"><h1 class=\"ds-page-header__title\">Sassy Lash &amp; Skin</h1><p class=\"ds-page-header__subtitle\">Book your appointment below</p></header>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&family=Inter:wght@400&display=swap'); .ds-page-header { background: #FFFFFF; border-bottom: 1px solid #E7E5E4; padding: 20px 16px; text-align: center; } .ds-page-header__title { font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; font-size: 1.5rem; font-weight: 700; color: #292524; letter-spacing: -0.025em; margin: 0; } .ds-page-header__subtitle { font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 400; color: #78716C; margin: 4px 0 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Local Gem",
+    "overview": "The booking interface for Sassy Lash & Skin is not a scheduling tool that happens to have a logo. It is a first impression of a business with personality: warm, real, a little particular, and clearly good at what it does. Regulars should feel at home. New clients should feel like they found something worth booking. Every design decision answers to that.\n\nThe palette is warm neutrals carrying the surface, with rose woven through every moment of touch: selections, confirmations, focus rings, the CTA. Not a shy accent, not a hero color. Rose is at 35-50% of interactive elements because warmth is the booking experience. Typography pairs Plus Jakarta Sans at headings with Inter at body. The contrast between the two adds character without noise.\n\nThis system explicitly rejects: the corporate blue grid-table aesthetic of Calendly and Acuity, cheap-feminine design (pink glitter, script fonts, clip-art florals), and anything moody or dark.",
+    "keyCharacteristics": [
+      "Warm neutral foundation (stone) with rose woven through all interactive and highlight states",
+      "Two-font system: expressive display sans (Plus Jakarta Sans) at headings, Inter at body",
+      "Flat elevation: depth through border shifts and tonal backgrounds, never shadows",
+      "Progressive disclosure layout (service, date, time, form) feels like steps, not a form",
+      "Mobile-first: most clients book on their phones; touch targets always 44px minimum"
+    ],
+    "rules": [
+      {
+        "name": "The Woven Rose Rule",
+        "body": "Rose is not a hero color and not a shy accent. It lives on all interactive elements in their selected, focused, and active states. Its warmth is the booking experience. Do not reduce it to a single CTA button.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Foundation Rule",
+        "body": "Never use pure white (#FFFFFF) as the page background. Cream Canvas (#FAFAF9) is the base; Warm White is for cards set against it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Double-Voice Rule",
+        "body": "Use Plus Jakarta Sans (display, headline, title) when the client reads about a choice. Use Inter (body, label) when they read instructions or form data. Never mix within a single semantic block.",
+        "section": "typography"
+      },
+      {
+        "name": "The Scale Rule",
+        "body": "Minimum ratio between adjacent hierarchy steps is 1.25. No flat type scales.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "If you reach for box-shadow, stop. Solve with a border shift or background tint. Shadows are not prohibited, but none have been needed in this system, and that is the point.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use Plus Jakarta Sans for all headings, service names, card titles, and the page title. Keep Inter for body copy, form labels, step labels, and metadata.",
+      "Do let rose show up at every moment of client engagement: hover borders, selected borders, focus rings, the CTA button, the booking summary.",
+      "Do use Cream Canvas (#FAFAF9) as the page base. Never pure white as the background.",
+      "Do design for mobile first. Touch targets 44px minimum.",
+      "Do use 2px borders on service cards. The weight signals selection affordance.",
+      "Do keep elevation flat. Solve depth with border shifts and tonal backgrounds before reaching for shadows.",
+      "Do keep step labels small, uppercase, and Fog-colored. They orient without competing."
+    ],
+    "donts": [
+      "Don't design this like Calendly or Acuity. No corporate blue, no grid-heavy tables, no scheduling-software feel.",
+      "Don't use pink glitter, script fonts for UI copy, clip-art florals, or obvious cheap-feminine patterns. Luxe, not dollar-store pink.",
+      "Don't introduce dark mode or dark surfaces. Light mode only.",
+      "Don't reach for box-shadow without exhausting border shifts and tonal backgrounds first.",
+      "Don't use gradient text (background-clip: text with a gradient). Use Warm Garnet solid.",
+      "Don't use border-left greater than 1px as a colored accent stripe on cards or alerts.",
+      "Don't reduce rose to one button. The warmth comes from rose woven through all interaction states.",
+      "Don't use pure black (#000000) or pure white (#FFFFFF) as text or page background."
+    ]
+  }
+}
