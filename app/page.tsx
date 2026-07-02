@@ -13,11 +13,11 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      <header className="bg-white border-b border-stone-200 px-4 py-5 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Sassy Lash &amp; Skin</h1>
-        <p className="text-stone-500 text-sm mt-1">Book your appointment below</p>
+      <header className="bg-warm-white border-b border-chalk px-4 py-7 text-center">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-deep-walnut">Sassy Lash &amp; Skin</h1>
+        <p className="font-body text-sm text-driftwood mt-2">Book your appointment</p>
       </header>
-      <div className="max-w-lg mx-auto px-4 py-8">
+      <div className="max-w-lg mx-auto px-4 py-10">
         <BookingPageClient services={services ?? []} availableDays={availableDays} />
       </div>
     </main>

@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-figtree), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  --color-warm-garnet: oklch(64.5% 0.246 16.439);
+  --color-warm-garnet-deep: oklch(58.6% 0.253 17.585);
+  --color-warm-garnet-border: oklch(71.2% 0.194 13.428);
+  --color-blushed-petal: oklch(96.9% 0.015 12.422);
+  --color-petal-border: oklch(89.2% 0.058 10.001);
+  --color-cream-canvas: oklch(98.5% 0.001 106.423);
+  --color-warm-white: oklch(100% 0 0);
+  --color-deep-walnut: oklch(26.8% 0.007 34.298);
+  --color-driftwood: oklch(55.3% 0.013 58.071);
+  --color-fog: oklch(70.9% 0.01 56.259);
+  --color-chalk: oklch(92.3% 0.003 48.717);
+  --color-ash: oklch(97% 0.001 106.424);
+  --color-error-surface: oklch(97.1% 0.013 17.38);
+  --color-error-text: oklch(50.5% 0.213 27.518);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+}

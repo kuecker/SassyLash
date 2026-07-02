@@ -17,18 +17,18 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
   return (
     <button
       onClick={() => onSelect(service)}
-      className={`w-full text-left p-5 rounded-xl border-2 transition-all ${
+      className={`w-full text-left p-5 rounded-xl border-2 transition-all duration-150 ${
         selected
-          ? 'border-rose-400 bg-rose-50'
-          : 'border-stone-200 bg-white hover:border-rose-200'
+          ? 'border-warm-garnet-border bg-blushed-petal'
+          : 'border-chalk bg-warm-white hover:border-petal-border'
       }`}
     >
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start gap-4">
         <div>
-          <h3 className="font-semibold text-lg">{service.name}</h3>
-          <p className="text-stone-500 text-sm mt-1">{service.description}</p>
+          <h3 className="font-display text-lg font-semibold text-deep-walnut">{service.name}</h3>
+          <p className="font-body text-driftwood text-sm mt-1">{service.description}</p>
         </div>
-        <span className="text-sm text-stone-400 whitespace-nowrap ml-4 mt-1">{duration}</span>
+        <span className="font-body text-sm text-fog whitespace-nowrap mt-0.5 flex-shrink-0">{duration}</span>
       </div>
     </button>
   )

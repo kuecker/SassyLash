@@ -44,49 +44,49 @@ export function BookingForm({ service, slot, onSuccess, onError }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="bg-rose-50 border border-rose-200 rounded-lg p-4 text-sm">
-        <p className="font-medium text-rose-800">{service.name}</p>
-        <p className="text-rose-600">{format(new Date(slot.start), "EEEE, MMMM d 'at' h:mm a")}</p>
+      <div className="bg-blushed-petal border border-petal-border rounded-lg p-4 text-sm">
+        <p className="font-display font-medium text-deep-walnut">{service.name}</p>
+        <p className="font-body text-driftwood mt-0.5">{format(new Date(slot.start), "EEEE, MMMM d 'at' h:mm a")}</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1">Full Name</label>
+        <label className="block font-body text-sm font-medium text-deep-walnut mb-1">Full Name</label>
         <input
           type="text"
           required
           value={name}
           onChange={e => setName(e.target.value)}
-          className="w-full border border-stone-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-rose-300"
+          className="w-full font-body border border-chalk rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-petal-border bg-warm-white text-deep-walnut placeholder:text-fog"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1">Phone Number</label>
+        <label className="block font-body text-sm font-medium text-deep-walnut mb-1">Phone Number</label>
         <input
           type="tel"
           required
           value={phone}
           onChange={e => setPhone(e.target.value)}
           placeholder="+1 (555) 000-0000"
-          className="w-full border border-stone-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-rose-300"
+          className="w-full font-body border border-chalk rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-petal-border bg-warm-white text-deep-walnut placeholder:text-fog"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1">Email</label>
+        <label className="block font-body text-sm font-medium text-deep-walnut mb-1">Email</label>
         <input
           type="email"
           required
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="w-full border border-stone-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-rose-300"
+          className="w-full font-body border border-chalk rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-petal-border bg-warm-white text-deep-walnut placeholder:text-fog"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-rose-500 hover:bg-rose-600 disabled:bg-rose-300 text-white font-semibold py-3 px-6 rounded-xl transition-colors"
+        className="w-full bg-warm-garnet hover:bg-warm-garnet-deep disabled:opacity-50 text-white font-display font-semibold py-3 px-6 rounded-xl transition-colors duration-150"
       >
         {loading ? 'Requesting...' : 'Request Appointment'}
       </button>

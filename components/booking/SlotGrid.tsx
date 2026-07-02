@@ -14,7 +14,7 @@ export function SlotGrid({ slots, selected, onSelect, loading }: Props) {
     return (
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-10 bg-stone-100 rounded-lg animate-pulse" />
+          <div key={i} className="h-10 bg-ash rounded-lg animate-pulse" />
         ))}
       </div>
     )
@@ -22,7 +22,7 @@ export function SlotGrid({ slots, selected, onSelect, loading }: Props) {
 
   if (slots.length === 0) {
     return (
-      <p className="text-stone-500 text-sm py-4">
+      <p className="font-body text-driftwood text-sm py-4">
         No available slots for this date. Please select another day.
       </p>
     )
@@ -36,10 +36,10 @@ export function SlotGrid({ slots, selected, onSelect, loading }: Props) {
           <button
             key={slot.start}
             onClick={() => onSelect(slot)}
-            className={`py-2 px-3 rounded-lg border text-sm font-medium transition-all ${
+            className={`font-body py-2 px-3 rounded-lg border text-sm font-medium transition-all duration-150 ${
               isSelected
-                ? 'border-rose-400 bg-rose-50 text-rose-700'
-                : 'border-stone-200 bg-white hover:border-rose-200 text-stone-700'
+                ? 'border-warm-garnet-border bg-blushed-petal text-warm-garnet'
+                : 'border-chalk bg-warm-white hover:border-petal-border text-deep-walnut'
             }`}
           >
             {slot.label}

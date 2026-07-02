@@ -48,16 +48,15 @@ export function BookingPageClient({ services, availableDays }: Props) {
   const step = !service ? 1 : !date ? 2 : !slot ? 3 : 4
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-9">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-error-surface border border-petal-border text-error-text px-4 py-3 rounded-lg text-sm font-body">
           {error}
         </div>
       )}
 
-      {/* Step 1: Service */}
       <section>
-        <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">
+        <h2 className="font-body text-xs font-semibold text-fog uppercase tracking-widest mb-4">
           1. Select a Service
         </h2>
         <div className="space-y-3">
@@ -72,10 +71,9 @@ export function BookingPageClient({ services, availableDays }: Props) {
         </div>
       </section>
 
-      {/* Step 2: Date */}
       {step >= 2 && (
         <section>
-          <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">
+          <h2 className="font-body text-xs font-semibold text-fog uppercase tracking-widest mb-4">
             2. Choose a Date
           </h2>
           <DatePicker
@@ -86,10 +84,9 @@ export function BookingPageClient({ services, availableDays }: Props) {
         </section>
       )}
 
-      {/* Step 3: Time Slot */}
       {step >= 3 && (
         <section>
-          <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">
+          <h2 className="font-body text-xs font-semibold text-fog uppercase tracking-widest mb-4">
             3. Pick a Time
           </h2>
           <SlotGrid
@@ -101,10 +98,9 @@ export function BookingPageClient({ services, availableDays }: Props) {
         </section>
       )}
 
-      {/* Step 4: Form */}
       {step >= 4 && slot && service && (
         <section>
-          <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">
+          <h2 className="font-body text-xs font-semibold text-fog uppercase tracking-widest mb-4">
             4. Your Information
           </h2>
           <BookingForm

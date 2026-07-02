@@ -21,15 +21,15 @@ export function DatePicker({ selected, onSelect, availableDays }: Props) {
           <button
             key={day.toISOString()}
             onClick={() => onSelect(day)}
-            className={`flex flex-col items-center p-2 rounded-lg border transition-all ${
+            className={`flex flex-col items-center p-2 rounded-lg border transition-all duration-150 ${
               isSelected
-                ? 'border-rose-400 bg-rose-50 text-rose-700'
-                : 'border-stone-200 bg-white hover:border-rose-200 text-stone-700'
+                ? 'border-warm-garnet-border bg-blushed-petal text-warm-garnet'
+                : 'border-chalk bg-warm-white hover:border-petal-border text-deep-walnut'
             }`}
           >
-            <span className="text-xs text-stone-400">{format(day, 'EEE')}</span>
-            <span className="font-semibold">{format(day, 'd')}</span>
-            <span className="text-xs">{format(day, 'MMM')}</span>
+            <span className="font-body text-xs text-fog">{format(day, 'EEE')}</span>
+            <span className="font-display font-semibold">{format(day, 'd')}</span>
+            <span className="font-body text-xs">{format(day, 'MMM')}</span>
           </button>
         )
       })}
