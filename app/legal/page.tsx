@@ -7,9 +7,9 @@ export const metadata: Metadata = {
 }
 
 // Placeholders — replace with real business contact details.
-const BUSINESS_EMAIL = '[BUSINESS EMAIL]'
-const BUSINESS_PHONE = '[BUSINESS PHONE]'
-const BUSINESS_ADDRESS = '[BUSINESS ADDRESS]'
+const BUSINESS_EMAIL = 'Kyle.uecker@icloud.com'
+const BUSINESS_PHONE = '253-222-8675'
+const BUSINESS_ADDRESS = '8824 N Harborview Dr, Gig Harbor, WA 98332'
 const LAST_UPDATED = 'July 7, 2026'
 
 export default function LegalPage() {
