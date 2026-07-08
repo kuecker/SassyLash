@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/server'
 import { BookingPageClient } from './BookingPageClient'
 
@@ -20,6 +21,11 @@ export default async function Home() {
       <div className="max-w-lg mx-auto px-4 py-10">
         <BookingPageClient services={services ?? []} availableDays={availableDays} />
       </div>
+      <footer className="border-t border-chalk px-4 py-6 text-center">
+        <Link href="/legal" className="font-body text-sm text-driftwood hover:text-deep-walnut underline underline-offset-2">
+          Privacy Policy &amp; SMS Terms
+        </Link>
+      </footer>
     </main>
   )
 }

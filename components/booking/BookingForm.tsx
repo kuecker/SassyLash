@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import type { ServiceRow, TimeSlot } from '@/types'
 import { format } from 'date-fns'
 
@@ -79,6 +80,14 @@ export function BookingForm({ service, slot, date, onSuccess, onError }: Props) 
           placeholder="+1 (555) 000-0000"
           className="w-full font-body border border-chalk rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-petal-border bg-warm-white text-deep-walnut placeholder:text-fog"
         />
+        <p className="mt-1.5 font-body text-xs text-driftwood leading-relaxed">
+          By providing your phone number, you agree to receive transactional text messages about your appointment.
+          Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our{' '}
+          <Link href="/legal" className="text-warm-garnet hover:text-warm-garnet-deep underline underline-offset-2">
+            Privacy Policy &amp; SMS Terms
+          </Link>
+          .
+        </p>
       </div>
 
       <div>
