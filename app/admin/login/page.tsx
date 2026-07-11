@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -16,10 +15,13 @@ export default function LoginPage() {
     setLoading(true)
     setError(null)
 
-    const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
 
-    if (error) {
+    if (!res.ok) {
       setError('Invalid email or password.')
       setLoading(false)
     } else {
@@ -67,7 +69,7 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="text-xs text-stone-400 text-center mt-4">
-          Owner access only. Create your account in Supabase Auth dashboard.
+          Owner access only. Create your account in the Cognito user pool.
         </p>
       </div>
     </main>

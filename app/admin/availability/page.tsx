@@ -1,12 +1,9 @@
-import { createServiceRoleClient } from '@/lib/supabase/server'
+import { listAvailability } from '@/lib/db/availability'
 import { AvailabilityEditor } from '@/components/admin/AvailabilityEditor'
 
 export default async function AvailabilityPage() {
-  const db = createServiceRoleClient()
-  const { data: availability } = await db
-    .from('availability')
-    .select('*')
-    .order('day_of_week')
+  const availability = (await listAvailability())
+    .sort((a, b) => a.day_of_week - b.day_of_week)
 
   return (
     <div className="space-y-6">

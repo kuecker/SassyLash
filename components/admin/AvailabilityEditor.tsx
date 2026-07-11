@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import type { AvailabilityRow } from '@/types'
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -15,11 +14,14 @@ export function AvailabilityEditor({ initialAvailability }: Props) {
   const [saving, setSaving] = useState<string | null>(null)
   const [saved,  setSaved]  = useState<string | null>(null)
 
-  async function update(id: string, patch: Partial<AvailabilityRow>) {
+  async function update(id: string, day_of_week: number, patch: Partial<AvailabilityRow>) {
     setSaving(id)
     setSaved(null)
-    const supabase = createClient()
-    await supabase.from('availability').update(patch).eq('id', id)
+    await fetch('/api/admin/availability', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ day_of_week, ...patch }),
+    })
     setRows(prev => prev.map(r => r.id === id ? { ...r, ...patch } : r))
     setSaving(null)
     setSaved(id)
@@ -35,7 +37,7 @@ export function AvailabilityEditor({ initialAvailability }: Props) {
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => update(row.id, { is_active: !row.is_active })}
+                  onClick={() => update(row.id, row.day_of_week, { is_active: !row.is_active })}
                   className={`relative w-11 h-6 rounded-full transition-colors ${
                     row.is_active ? 'bg-rose-500' : 'bg-stone-300'
                   }`}
@@ -56,14 +58,14 @@ export function AvailabilityEditor({ initialAvailability }: Props) {
                   <input
                     type="time"
                     value={row.start_time.slice(0, 5)}
-                    onChange={e => update(row.id, { start_time: e.target.value })}
+                    onChange={e => update(row.id, row.day_of_week, { start_time: e.target.value })}
                     className="border border-stone-300 rounded-lg px-2 py-1"
                   />
                   <span className="text-stone-400">to</span>
                   <input
                     type="time"
                     value={row.end_time.slice(0, 5)}
-                    onChange={e => update(row.id, { end_time: e.target.value })}
+                    onChange={e => update(row.id, row.day_of_week, { end_time: e.target.value })}
                     className="border border-stone-300 rounded-lg px-2 py-1"
                   />
                   {saving === row.id && <span className="text-xs text-stone-400">Saving...</span>}

@@ -1,16 +1,21 @@
 import Link from 'next/link'
-import { createServiceRoleClient } from '@/lib/supabase/server'
+import { listServices } from '@/lib/db/services'
+import { listAvailability } from '@/lib/db/availability'
 import { BookingPageClient } from './BookingPageClient'
 
 export default async function Home() {
-  const db = createServiceRoleClient()
-
-  const [{ data: services }, { data: availability }] = await Promise.all([
-    db.from('services').select('*').eq('active', true).order('duration_minutes', { ascending: false }),
-    db.from('availability').select('*').eq('is_active', true),
+  const [allServices, allAvailability] = await Promise.all([
+    listServices(),
+    listAvailability(),
   ])
 
-  const availableDays = (availability ?? []).map((a: { day_of_week: number }) => a.day_of_week)
+  const services = allServices
+    .filter((s) => s.active)
+    .sort((a, b) => b.duration_minutes - a.duration_minutes)
+
+  const availableDays = allAvailability
+    .filter((a) => a.is_active)
+    .map((a) => a.day_of_week)
 
   return (
     <main className="min-h-screen">

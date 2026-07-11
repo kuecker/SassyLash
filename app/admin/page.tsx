@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { BookingCard } from '@/components/admin/BookingCard'
 import type { BookingWithRelations } from '@/types'
 
@@ -15,35 +14,19 @@ export default function AdminDashboard() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    const supabase = createClient()
-    const now = new Date().toISOString()
-
-    let query = supabase
-      .from('bookings')
-      .select('*, clients(*), services(*)')
-      .order('start_time', { ascending: tab !== 'past' })
-
-    if (tab === 'pending') {
-      query = query.eq('status', 'pending')
-    } else if (tab === 'upcoming') {
-      query = query.eq('status', 'confirmed').gte('start_time', now)
-    } else {
-      // Past tab: denied/expired/cancelled at any time, plus confirmed past appointments
-      query = supabase
-        .from('bookings')
-        .select('*, clients(*), services(*)')
-        .or(`status.in.(denied,expired,cancelled),and(status.eq.confirmed,start_time.lt.${now})`)
-        .order('start_time', { ascending: false })
-    }
-
-    const { data, error: queryError } = await query
-    if (queryError) {
+    try {
+      const res = await fetch(`/api/admin/bookings?tab=${tab}`)
+      if (!res.ok) {
+        setLoadError('Failed to load appointments. Please refresh.')
+        setLoading(false)
+        return
+      }
+      const { bookings } = await res.json()
+      setLoadError(null)
+      setBookings((bookings as BookingWithRelations[]) ?? [])
+    } catch {
       setLoadError('Failed to load appointments. Please refresh.')
-      setLoading(false)
-      return
     }
-    setLoadError(null)
-    setBookings((data as BookingWithRelations[]) ?? [])
     setLoading(false)
   }, [tab])
 

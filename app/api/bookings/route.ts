@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServiceRoleClient } from '@/lib/supabase/server'
 import { generateBookingRef } from '@/lib/booking-ref'
-import { sendOwnerNotification } from '@/lib/twilio'
-import { addMinutes } from 'date-fns'
+import { sendOwnerNotification } from '@/lib/sms'
+import { getService } from '@/lib/db/services'
+import { upsertClient } from '@/lib/db/clients'
+import { createBooking, setBookingMessageId } from '@/lib/db/bookings'
+
+const TZ = process.env.BUSINESS_TIMEZONE ?? 'America/Denver'
 
 export async function POST(request: NextRequest) {
   let body: { serviceId?: string; start?: string; name?: string; phone?: string; email?: string }
@@ -28,87 +31,61 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
   }
 
-  // Reject bookings more than 90 days out (limits abuse window)
+  // Reject past bookings and anything more than 90 days out (limits abuse window)
   const startDate = new Date(start)
   const maxDate   = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
   if (isNaN(startDate.getTime()) || startDate > maxDate) {
     return NextResponse.json({ error: 'Invalid booking date' }, { status: 400 })
   }
+  if (startDate.getTime() < Date.now()) {
+    return NextResponse.json({ error: 'Cannot book a slot in the past.' }, { status: 400 })
+  }
 
-  const supabase = createServiceRoleClient()
-
-  // Get service duration
-  const { data: service } = await supabase
-    .from('services')
-    .select('id, name, duration_minutes')
-    .eq('id', serviceId)
-    .eq('active', true)
-    .single()
-
-  if (!service) {
+  const service = await getService(serviceId)
+  if (!service || !service.active) {
     return NextResponse.json({ error: 'Service not found' }, { status: 404 })
   }
 
-  const startTime = new Date(start)
-  const endTime   = addMinutes(startTime, service.duration_minutes)
-
-  // Upsert client — look up by phone, create if not found
-  let clientId: string
-  const { data: existingClient } = await supabase
-    .from('clients')
-    .select('id')
-    .eq('phone', phone)
-    .single()
-
-  if (existingClient) {
-    clientId = existingClient.id
-  } else {
-    const { data: newClient, error: clientError } = await supabase
-      .from('clients')
-      .insert({ name, phone, email })
-      .select('id')
-      .single()
-
-    if (clientError || !newClient) {
-      return NextResponse.json({ error: 'Failed to create client' }, { status: 500 })
-    }
-    clientId = newClient.id
+  // Upsert client by phone (natural unique key)
+  let client
+  try {
+    client = await upsertClient({ name, phone, email })
+  } catch (e) {
+    console.error('Failed to upsert client:', e)
+    return NextResponse.json({ error: 'Failed to create client' }, { status: 500 })
   }
 
-  // Atomic booking creation via RPC (prevents double-booking)
+  // Atomic booking creation (prevents double-booking + one-pending-per-client)
   const shortRef = generateBookingRef()
-  const { data: bookingId, error: rpcError } = await supabase.rpc('create_booking', {
-    p_client_id:  clientId,
-    p_service_id: serviceId,
-    p_start_time: startTime.toISOString(),
-    p_end_time:   endTime.toISOString(),
-    p_short_ref:  shortRef,
+  const result = await createBooking({
+    shortRef,
+    client: { phone: client.phone, name: client.name, email: client.email },
+    serviceId: service.id,
+    serviceName: service.name,
+    durationMinutes: service.duration_minutes,
+    startTime: startDate.toISOString(),
+    timezone: TZ,
   })
 
-  if (rpcError) {
-    if (rpcError.message.includes('slot_unavailable')) {
-      return NextResponse.json({ error: 'This slot is no longer available.' }, { status: 409 })
-    }
-    if (rpcError.message.includes('slot_in_past')) {
-      return NextResponse.json({ error: 'Cannot book a slot in the past.' }, { status: 400 })
-    }
-    if (rpcError.message.includes('client_has_pending')) {
+  if (!result.ok) {
+    if (result.reason === 'client_has_pending') {
       return NextResponse.json({ error: 'You already have a pending booking request.' }, { status: 409 })
     }
-    return NextResponse.json({ error: 'Failed to create booking' }, { status: 500 })
+    return NextResponse.json({ error: 'This slot is no longer available.' }, { status: 409 })
   }
 
-  // Send SMS to owner (non-blocking — don't fail booking if SMS fails)
+  // Notify owner (non-blocking — don't fail the booking if SMS fails)
   try {
-    await sendOwnerNotification({
+    const sid = await sendOwnerNotification({
       short_ref:    shortRef,
       client_name:  name,
       service_name: service.name,
-      start_time:   startTime.toISOString(),
+      start_time:   startDate.toISOString(),
     })
+    if (sid) await setBookingMessageId(result.id, sid)
   } catch (e) {
     console.error('Failed to send owner SMS:', e)
   }
 
-  return NextResponse.json({ bookingId, shortRef }, { status: 201 })
+  return NextResponse.json({ bookingId: result.id, shortRef }, { status: 201 })
 }
